@@ -101,10 +101,46 @@ class _EditItemPageState extends State<EditItemPage> {
         child: Column(
           children: [
 
-            Image.asset(
-              "assets/desk.jpg",
-              height: 120,
-            ),
+              widget.item.image != null && widget.item.image != ""
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        "$baseUrl/uploads/${widget.item.image}",
+                        height: 120,
+                        fit: BoxFit.cover,
+                        headers: {
+                          "ngrok-skip-browser-warning": "true",
+                        },
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Container(
+                            height: 120,
+                            color: Colors.grey[200],
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) => Icon(Icons.broken_image, size: 120),
+                      ),
+                    )
+                  : Container(
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        Icons.devices,
+                        size: 60,
+                        color: Colors.grey[600],
+                      ),
+                    ),
 
             SizedBox(height: 20),
 
