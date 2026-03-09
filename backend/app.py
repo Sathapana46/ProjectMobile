@@ -91,19 +91,24 @@ def get_items():
 
 
 # SEARCH ITEM BY QR CODE (support slashes)
-@app.route("/items/<code>", methods=["GET"])
-@app.route("/code/<path:code>", methods=["GET"])
+
+@app.route("/items/<path:code>", methods=["GET"])
 def search_item(code):
+
     db = connect_db()
     cursor = db.cursor(dictionary=True)
+
     cursor.execute(
-        "SELECT * FROM items WHERE code = %s",
+        "SELECT * FROM items WHERE code=%s",
         (code,)
     )
+
     item = cursor.fetchone()
+
     if item:
         return jsonify(item)
-    return jsonify({"status": "not found"})
+
+    return jsonify({"status":"not found"})
 
 # ADD ITEM
 @app.route("/add-item",methods=["POST"])
