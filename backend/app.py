@@ -96,7 +96,7 @@ def search_item(code):
     cursor = db.cursor(dictionary=True)
 
     cursor.execute(
-        "SELECT * FROM items WHERE code=%s",
+        "SELECT * FROM items WHERE code LIKE %s",
         (code,)
     )
 

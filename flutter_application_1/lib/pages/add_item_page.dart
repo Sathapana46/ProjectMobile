@@ -30,39 +30,31 @@ class _AddItemPageState extends State<AddItemPage> {
   /// Scan QR
   /// =============================
   Future scanQR() async {
-
-    await Navigator.push(
+    final code = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => Scaffold(
           appBar: AppBar(title: const Text("Scan QR Code")),
           body: MobileScanner(
             onDetect: (BarcodeCapture capture) {
-
               final List<Barcode> barcodes = capture.barcodes;
-
               for (final barcode in barcodes) {
-
                 final String? code = barcode.rawValue;
-
                 if (code != null) {
-
-                  setState(() {
-                    codeController.text = code;
-                  });
-
-                  Navigator.pop(context);
+                  Navigator.pop(context, code);
                   break;
-
                 }
-
               }
-
             },
           ),
         ),
       ),
     );
+    if (code != null) {
+      setState(() {
+        codeController.text = code;
+      });
+    }
   }
 
   /// =============================
