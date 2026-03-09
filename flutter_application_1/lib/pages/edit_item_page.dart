@@ -13,8 +13,10 @@ class EditItemPage extends StatefulWidget {
 }
 
 class _EditItemPageState extends State<EditItemPage> {
+
   final nameController = TextEditingController();
   final typeController = TextEditingController();
+  final codeController = TextEditingController();
   final locationController = TextEditingController();
 
   String status = "ใช้งาน";
@@ -27,6 +29,7 @@ class _EditItemPageState extends State<EditItemPage> {
 
     nameController.text = widget.item.name;
     typeController.text = widget.item.type;
+    codeController.text = widget.item.code;
     locationController.text = widget.item.location;
     status = widget.item.status;
   }
@@ -38,6 +41,7 @@ class _EditItemPageState extends State<EditItemPage> {
       body: jsonEncode({
         "name": nameController.text,
         "type": typeController.text,
+        "code": codeController.text,
         "status": status,
         "location": locationController.text,
       }),
@@ -47,7 +51,9 @@ class _EditItemPageState extends State<EditItemPage> {
   }
 
   deleteItem() async {
-    await http.delete(Uri.parse("$baseUrl/delete-item/${widget.item.id}"));
+    await http.delete(
+      Uri.parse("$baseUrl/delete-item/${widget.item.id}"),
+    );
 
     Navigator.pop(context);
   }
@@ -59,7 +65,9 @@ class _EditItemPageState extends State<EditItemPage> {
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
         ),
       ),
     );
@@ -83,22 +91,30 @@ class _EditItemPageState extends State<EditItemPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("แก้ไขครุภัณฑ์")),
+      appBar: AppBar(
+        title: Text("แก้ไขครุภัณฑ์"),
+      ),
 
       body: Padding(
         padding: EdgeInsets.all(16),
 
         child: Column(
           children: [
-            Image.asset("assets/desk.jpg", height: 120),
+
+            Image.asset(
+              "assets/desk.jpg",
+              height: 120,
+            ),
 
             SizedBox(height: 20),
 
-            buildInput("ชื่อ", nameController),
+            buildInput("ชื่อครุภัณฑ์", nameController),
 
             buildInput("ประเภท", typeController),
 
-            buildInput("รหัสสินค้า", locationController),
+            buildInput("รหัสครุภัณฑ์ (QR Code)", codeController),
+
+            buildInput("สถานที่", locationController),
 
             DropdownButtonFormField(
               value: status,
@@ -109,9 +125,18 @@ class _EditItemPageState extends State<EditItemPage> {
                 ),
               ),
               items: [
-                DropdownMenuItem(value: "ใช้งาน", child: Text("ใช้งานได้")),
-                DropdownMenuItem(value: "ซ่อม", child: Text("ซ่อม")),
-                DropdownMenuItem(value: "เสีย", child: Text("เสีย")),
+                DropdownMenuItem(
+                  value: "ใช้งาน",
+                  child: Text("ใช้งานได้"),
+                ),
+                DropdownMenuItem(
+                  value: "ซ่อม",
+                  child: Text("ซ่อม"),
+                ),
+                DropdownMenuItem(
+                  value: "เสีย",
+                  child: Text("เสีย"),
+                ),
               ],
               onChanged: (v) {
                 setState(() {
@@ -124,13 +149,22 @@ class _EditItemPageState extends State<EditItemPage> {
 
             Row(
               children: [
-                buildButton("บันทึก", Colors.blue, updateItem),
+
+                buildButton(
+                  "บันทึก",
+                  Colors.blue,
+                  updateItem,
+                ),
 
                 SizedBox(width: 10),
 
-                buildButton("ยกเลิก", Colors.grey, () {
-                  Navigator.pop(context);
-                }),
+                buildButton(
+                  "ยกเลิก",
+                  Colors.grey,
+                  () {
+                    Navigator.pop(context);
+                  },
+                ),
               ],
             ),
           ],

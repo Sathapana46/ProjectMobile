@@ -2,12 +2,13 @@ from flask import Flask,request,jsonify
 from flask_cors import CORS
 from db import connect_db
 from flask import send_from_directory
+from flask import make_response
 import os
 
 app = Flask(__name__)
 CORS(app)
 
-UPLOAD_FOLDER = "uploads"
+UPLOAD_FOLDER = os.path.join(os.getcwd(), "uploads")
 os.makedirs(UPLOAD_FOLDER,exist_ok=True)
 
 # LOGIN
@@ -142,9 +143,11 @@ def add_item():
 
     return jsonify({"status":"success"})
 
-@app.route("/uploads/<filename>")
+@app.route("/uploads/<path:filename>")
 def uploaded_file(filename):
-    return send_from_directory("uploads", filename)
+    response = make_response(send_from_directory("uploads", filename))
+    response.headers["ngrok-skip-browser-warning"] = "true"
+    return response
 
 # UPDATE ITEM
 @app.route("/update-item/<id>",methods=["PUT"])
@@ -158,7 +161,7 @@ def update_item(id):
     cursor.execute(
         """
         UPDATE items
-        SET name=%s,type=%s,status=%s,location=%s
+        SET name=%s,type=%s,status=%s,location=%s,code=%s
         WHERE id=%s
         """,
         (
@@ -166,6 +169,7 @@ def update_item(id):
             data["type"],
             data["status"],
             data["location"],
+            data["code"],
             id
         )
     )

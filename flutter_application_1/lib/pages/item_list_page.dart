@@ -13,13 +13,17 @@ class _ItemListPageState extends State<ItemListPage> {
   List<Item> items = [];
   bool loading = true;
 
-  load() async {
-    items = await ApiService.getItems();
+load() async {
+  items = await ApiService.getItems();
 
-    setState(() {
-      loading = false;
-    });
+  for (var i in items) {
+    print(i.image);
   }
+
+  setState(() {
+    loading = false;
+  });
+}
 
   @override
   void initState() {
@@ -33,7 +37,6 @@ class _ItemListPageState extends State<ItemListPage> {
   showDeleteDialog(Item item) {
     showDialog(
       context: context,
-
       builder: (context) {
         return AlertDialog(
           title: Row(
@@ -43,27 +46,25 @@ class _ItemListPageState extends State<ItemListPage> {
               Text("Delete Item"),
             ],
           ),
-
           content: Text("Are you sure you want to delete ${item.name}?"),
-
           actions: [
             TextButton(
               child: Text("Cancel"),
-
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
-
             TextButton(
-              child: Text("Delete", style: TextStyle(color: Colors.red)),
-
+              child: Text(
+                "Delete",
+                style: TextStyle(color: Colors.red),
+              ),
               onPressed: () async {
                 await ApiService.deleteItem(item.id);
 
                 Navigator.pop(context);
 
-                load(); // refresh list
+                load() ;
               },
             ),
           ],
@@ -72,38 +73,79 @@ class _ItemListPageState extends State<ItemListPage> {
     );
   }
 
+  // ===============================
+  // BUILD UI
+  // ===============================
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Items")),
+      appBar: AppBar(
+        title: Text("Items"),
+      ),
 
       body: loading
           ? Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: items.length,
-
               itemBuilder: (c, i) {
                 var item = items[i];
 
                 return Card(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  elevation: 3,
 
                   child: ListTile(
-                    leading: Icon(Icons.devices, size: 35),
+                    // ===============================
+                    // IMAGE
+                    // ===============================
+                    leading: item.image != null && item.image != ""
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+  "${ApiService.baseUrl}/uploads/${item.image}",
+  width: 55,
+  height: 55,
+  fit: BoxFit.cover,
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+  },
+)
+                          )
+                        : Icon(Icons.devices, size: 40),
 
+                    // ===============================
+                    // NAME
+                    // ===============================
                     title: Text(
                       item.name,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
 
-                    subtitle: Text("${item.code} • ${item.location}"),
+                    // ===============================
+                    // CODE + LOCATION
+                    // ===============================
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Code: ${item.code}"),
+                        Text("Location: ${item.location}"),
+                      ],
+                    ),
 
+                    // ===============================
+                    // ACTIONS
+                    // ===============================
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        // STATUS
                         Text(
                           item.status,
                           style: TextStyle(
+                            fontWeight: FontWeight.bold,
                             color: item.status == "ใช้งาน"
                                 ? Colors.green
                                 : Colors.red,
@@ -112,16 +154,17 @@ class _ItemListPageState extends State<ItemListPage> {
 
                         SizedBox(width: 10),
 
+                        // DELETE
                         IconButton(
                           icon: Icon(Icons.delete, color: Colors.red),
-
                           onPressed: () {
                             showDeleteDialog(item);
                           },
                         ),
+
+                        // EDIT
                         IconButton(
                           icon: Icon(Icons.edit, color: Colors.blue),
-
                           onPressed: () async {
                             await Navigator.push(
                               context,
@@ -130,7 +173,7 @@ class _ItemListPageState extends State<ItemListPage> {
                               ),
                             );
 
-                            load(); // refresh
+                            load();
                           },
                         ),
                       ],
@@ -140,6 +183,9 @@ class _ItemListPageState extends State<ItemListPage> {
               },
             ),
 
+      // ===============================
+      // ADD BUTTON
+      // ===============================
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
 
@@ -149,7 +195,7 @@ class _ItemListPageState extends State<ItemListPage> {
             MaterialPageRoute(builder: (_) => AddItemPage()),
           );
 
-          load(); // refresh หลังเพิ่ม
+          load();
         },
       ),
     );
