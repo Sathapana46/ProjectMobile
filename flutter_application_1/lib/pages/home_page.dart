@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/add_item_page.dart';
 import 'package:flutter_application_1/pages/dashboard_page.dart';
 import 'package:flutter_application_1/pages/deleteItem_page.dart';
+import 'package:flutter_application_1/pages/login_page.dart';
 import 'item_list_page.dart';
 import 'scan_page.dart';
 
 class HomePage extends StatelessWidget {
-  final Map<String, dynamic>? user;
-  const HomePage({Key? key, this.user}) : super(key: key);
   Widget menuCard(
     BuildContext context,
     String title,
@@ -90,7 +89,13 @@ class HomePage extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.logout),
               title: Text("ออกจากระบบ"),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (_) => LoginPage()),
+                  (route) => false,
+                );
+              },
             ),
           ],
         ),

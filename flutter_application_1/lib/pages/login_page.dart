@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
     if (res["status"] == "success") {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => HomePage(user: res["user"])),
+        MaterialPageRoute(builder: (_) => HomePage()),
       );
     } else {
       ScaffoldMessenger.of(
