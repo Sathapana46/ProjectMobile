@@ -97,7 +97,7 @@ def search_item(code):
 
     cursor.execute(
         "SELECT * FROM items WHERE code LIKE %s",
-        (code,)
+        ('%' + code + '%',)
     )
 
     item = cursor.fetchone()
