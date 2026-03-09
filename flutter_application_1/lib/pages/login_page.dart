@@ -13,12 +13,11 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController pass = TextEditingController();
 
   login() async {
-    bool ok = await ApiService.login(user.text, pass.text);
-
-    if (ok) {
+    var res = await ApiService.login(user.text, pass.text);
+    if (res["status"] == "success") {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => HomePage()),
+        MaterialPageRoute(builder: (_) => HomePage(user: res["user"])),
       );
     } else {
       ScaffoldMessenger.of(

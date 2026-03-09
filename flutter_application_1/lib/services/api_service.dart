@@ -39,8 +39,7 @@ class ApiService {
   // ===============================
   // LOGIN
   // ===============================
-  static Future<bool> login(String username, String password) async {
-
+  static Future<Map<String, dynamic>> login(String username, String password) async {
     final res = await http.post(
       Uri.parse("$baseUrl/login"),
       headers: {"Content-Type": "application/json"},
@@ -49,10 +48,8 @@ class ApiService {
         "password": password
       }),
     );
-
     var data = jsonDecode(res.body);
-
-    return data["status"] == "success";
+    return data;
   }
 
   // ===============================

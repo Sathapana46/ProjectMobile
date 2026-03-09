@@ -6,6 +6,8 @@ import 'item_list_page.dart';
 import 'scan_page.dart';
 
 class HomePage extends StatelessWidget {
+  final Map<String, dynamic>? user;
+  const HomePage({Key? key, this.user}) : super(key: key);
   Widget menuCard(
     BuildContext context,
     String title,
