@@ -198,7 +198,7 @@ load() async {
                           item.status,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: item.status == "ใช้งาน"
+                            color: item.status == "ปกติ"
                                 ? Colors.green
                                 : Colors.red,
                           ),

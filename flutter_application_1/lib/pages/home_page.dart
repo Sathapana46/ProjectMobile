@@ -5,6 +5,7 @@ import 'package:flutter_application_1/pages/deleteItem_page.dart';
 import 'package:flutter_application_1/pages/login_page.dart';
 import 'item_list_page.dart';
 import 'scan_page.dart';
+import 'user_management_page.dart';
 
 class HomePage extends StatelessWidget {
   final String role;
@@ -90,7 +91,10 @@ class HomePage extends StatelessWidget {
                 leading: Icon(Icons.supervisor_account),
                 title: Text("จัดการผู้ใช้"),
                 onTap: () {
-                  // TODO: Navigate to user management page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => UserManagementPage()),
+                  );
                 },
               ),
             ListTile(
@@ -174,7 +178,10 @@ class HomePage extends StatelessWidget {
                 Colors.purple.shade200,
                 Colors.purple,
                 () {
-                  // TODO: Navigate to user management page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => UserManagementPage()),
+                  );
                 },
               ),
           ],

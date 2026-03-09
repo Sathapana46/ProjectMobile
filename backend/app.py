@@ -1,5 +1,6 @@
 from flask import Flask,request,jsonify
 from flask_cors import CORS
+import mysql
 from db import connect_db
 from flask import send_from_directory
 from flask import make_response
@@ -192,7 +193,61 @@ def dashboard():
         "repair": repair["repair"]
     })
 
+@app.route('/add-user', methods=['POST'])
+def add_user():
 
+    data = request.json
+
+    username = data['username']
+    password = data['password']
+    role = data['role']
+
+    db = connect_db()
+    cursor = db.cursor()
+
+    cursor.execute(
+        "INSERT INTO users (username,password,role) VALUES (%s,%s,%s)",
+        (username,password,role)
+    )
+
+    db.commit()
+
+    return jsonify({"status":"success"})
+
+@app.route('/update-user/<int:id>', methods=['PUT'])
+def update_user(id):
+
+    data = request.json
+
+    username = data['username']
+    role = data['role']
+
+    db = connect_db()
+    cursor = db.cursor()
+
+    cursor.execute(
+        "UPDATE users SET username=%s, role=%s WHERE id=%s",
+        (username, role, id)
+    )
+
+    db.commit()
+
+    return jsonify({"status":"success"})
+
+@app.route('/delete-user/<int:id>', methods=['DELETE'])
+def delete_user(id):
+
+    db = connect_db()
+    cursor = db.cursor()
+
+    cursor.execute(
+        "DELETE FROM users WHERE id=%s",
+        (id,)
+    )
+
+    db.commit()
+
+    return jsonify({"status":"deleted"})
 
 # DELETE ITEM
 @app.route("/delete-item/<id>",methods=["DELETE"])

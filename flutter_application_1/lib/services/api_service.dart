@@ -42,7 +42,8 @@ class ApiService {
   static Future<Map<String, dynamic>> login(String username, String password) async {
     final res = await http.post(
       Uri.parse("$baseUrl/login"),
-      headers: {"Content-Type": "application/json"},
+      headers: {"Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "true"},
       body: jsonEncode({
         "username": username,
         "password": password
@@ -119,6 +120,90 @@ class ApiService {
   static Future deleteItem(id) async {
     await http.delete(Uri.parse("$baseUrl/delete-item/$id"));
   }
+// ===============================
+// GET USERS
+// ===============================
+static Future<List<Map<String, dynamic>>> getUsers() async {
 
+  final res = await http.get(
+    Uri.parse("$baseUrl/users"),
+    headers: {
+      "ngrok-skip-browser-warning": "true"
+    },
+  );
+
+  if (res.statusCode == 200) {
+
+    final List data = jsonDecode(res.body);
+
+    return data.map((e) => Map<String, dynamic>.from(e)).toList();
+
+  } else {
+    return [];
+  }
+}
+
+// ===============================
+// ADD USER
+// ===============================
+static Future<bool> addUser(
+  String username,
+  String password,
+  String role,
+) async {
+
+  final res = await http.post(
+    Uri.parse("$baseUrl/add-user"),
+    headers: {
+      "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "true"
+    },
+    body: jsonEncode({
+      "username": username,
+      "password": password,
+      "role": role
+    }),
+  );
+
+  return res.statusCode == 200;
+}
+
+// ===============================
+// DELETE USER
+// ===============================
+static Future deleteUser(id) async {
+  await http.delete(
+    Uri.parse("$baseUrl/delete-user/$id"),
+    headers: {
+      "ngrok-skip-browser-warning": "true"
+    },
+  );
+}
+
+// ===============================
+// UPDATE USER
+// ===============================
+static Future<bool> updateUser(
+  int id,
+  String username,
+  String role,
+) async {
+
+  final res = await http.put(
+    Uri.parse("$baseUrl/update-user/$id"),
+    headers: {
+      "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "true"
+    },
+    body: jsonEncode({
+      "username": username,
+      "role": role
+    }),
+  );
+
+  print(res.body);
+
+  return res.statusCode == 200;
+}
 
 }

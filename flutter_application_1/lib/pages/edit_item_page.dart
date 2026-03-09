@@ -19,7 +19,7 @@ class _EditItemPageState extends State<EditItemPage> {
   final codeController = TextEditingController();
   final locationController = TextEditingController();
 
-  String status = "ใช้งาน";
+  String status = "ปกติ";
 
   final baseUrl = "https://teresa-semiradical-odilia.ngrok-free.dev";
 
@@ -162,16 +162,16 @@ class _EditItemPageState extends State<EditItemPage> {
               ),
               items: [
                 DropdownMenuItem(
-                  value: "ใช้งาน",
-                  child: Text("ใช้งานได้"),
+                  value: "ปกติ",
+                  child: Text("ปกติ"),
                 ),
                 DropdownMenuItem(
-                  value: "ซ่อม",
-                  child: Text("ซ่อม"),
+                  value: "ชำรุดรอซ่อม",
+                  child: Text("ชำรุดรอซ่อม"),
                 ),
                 DropdownMenuItem(
-                  value: "เสีย",
-                  child: Text("เสีย"),
+                  value: "จำหน่ายออก",
+                  child: Text("จำหน่ายออก"),
                 ),
               ],
               onChanged: (v) {

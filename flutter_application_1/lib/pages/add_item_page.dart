@@ -20,7 +20,7 @@ class _AddItemPageState extends State<AddItemPage> {
   final typeController = TextEditingController();
   final locationController = TextEditingController();
 
-  String status = "ใช้งาน";
+  String status = "ปกติ";
   File? imageFile;
 
   final picker = ImagePicker();
@@ -335,18 +335,18 @@ class _AddItemPageState extends State<AddItemPage> {
               items: const [
 
                 DropdownMenuItem(
-                  value: "ใช้งาน",
-                  child: Text("ใช้งาน"),
+                  value: "ปกติ",
+                  child: Text("ปกติ"),
                 ),
 
                 DropdownMenuItem(
-                  value: "ซ่อม",
-                  child: Text("ซ่อม"),
+                  value: "ชำรุดรอซ่อม",
+                  child: Text("ชำรุดรอซ่อม"),
                 ),
 
                 DropdownMenuItem(
-                  value: "เสีย",
-                  child: Text("เสีย"),
+                  value: "จำหน่ายออก",
+                  child: Text("จำหน่ายออก"),
                 ),
 
               ],
