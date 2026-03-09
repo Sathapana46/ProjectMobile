@@ -15,9 +15,10 @@ class _LoginPageState extends State<LoginPage> {
   login() async {
     var res = await ApiService.login(user.text, pass.text);
     if (res["status"] == "success") {
+      String role = res["user"] != null && res["user"]["role"] != null ? res["user"]["role"] : "user";
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => HomePage()),
+        MaterialPageRoute(builder: (_) => HomePage(role: role)),
       );
     } else {
       ScaffoldMessenger.of(

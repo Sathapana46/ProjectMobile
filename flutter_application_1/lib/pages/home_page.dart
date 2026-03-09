@@ -7,6 +7,8 @@ import 'item_list_page.dart';
 import 'scan_page.dart';
 
 class HomePage extends StatelessWidget {
+  final String role;
+  HomePage({required this.role});
   Widget menuCard(
     BuildContext context,
     String title,
@@ -53,7 +55,6 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
-
             ListTile(
               leading: Icon(Icons.list),
               title: Text("รายการครุภัณฑ์"),
@@ -64,7 +65,6 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
-
             ListTile(
               leading: Icon(Icons.qr_code),
               title: Text("Scan QR Code"),
@@ -75,7 +75,6 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
-
             ListTile(
               leading: Icon(Icons.dashboard),
               title: Text("Dashboard"),
@@ -86,6 +85,14 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
+            if (role == "admin")
+              ListTile(
+                leading: Icon(Icons.supervisor_account),
+                title: Text("จัดการผู้ใช้"),
+                onTap: () {
+                  // TODO: Navigate to user management page
+                },
+              ),
             ListTile(
               leading: Icon(Icons.logout),
               title: Text("ออกจากระบบ"),
@@ -120,7 +127,6 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
-
             menuCard(
               context,
               "เลือกครุภัณฑ์",
@@ -134,7 +140,6 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
-
             menuCard(
               context,
               "Scan QR Code",
@@ -148,7 +153,6 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
-
             menuCard(
               context,
               "ลบรายการครุภัณฑ์",
@@ -162,6 +166,17 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
+            if (role == "admin")
+              menuCard(
+                context,
+                "จัดการผู้ใช้",
+                Icons.supervisor_account,
+                Colors.purple.shade200,
+                Colors.purple,
+                () {
+                  // TODO: Navigate to user management page
+                },
+              ),
           ],
         ),
       ),
