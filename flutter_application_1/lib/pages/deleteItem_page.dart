@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/dashboard_page.dart';
 import '../services/api_service.dart';
 import '../models/item.dart';
 
@@ -30,7 +31,20 @@ class _DeleteItemPageState extends State<DeleteItemPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("ลบครุภัณฑ์")),
+      appBar: AppBar(
+        title: Text("ลบครุภัณฑ์"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.dashboard),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => DashboardPage()),
+              );
+            },
+          ),
+        ],
+      ),
 
       body: ListView.builder(
         itemCount: items.length,

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/dashboard_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -208,6 +209,17 @@ class _AddItemPageState extends State<AddItemPage> {
         title: const Text("เพิ่มครุภัณฑ์"),
         centerTitle: true,
         backgroundColor: Colors.blue.shade700,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.dashboard),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => DashboardPage()),
+              );
+            },
+          ),
+        ],
       ),
 
       body: SingleChildScrollView(

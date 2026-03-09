@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/add_item_page.dart';
+import 'package:flutter_application_1/pages/dashboard_page.dart';
 import 'package:flutter_application_1/pages/deleteItem_page.dart';
 import 'item_list_page.dart';
 import 'scan_page.dart';
@@ -74,6 +75,16 @@ class HomePage extends StatelessWidget {
               },
             ),
 
+            ListTile(
+              leading: Icon(Icons.dashboard),
+              title: Text("Dashboard"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => DashboardPage()),
+                );
+              },
+            ),
             ListTile(
               leading: Icon(Icons.logout),
               title: Text("ออกจากระบบ"),
