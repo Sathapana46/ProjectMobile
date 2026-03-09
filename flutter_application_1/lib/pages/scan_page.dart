@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import '../services/api_service.dart';
 import '../models/item.dart';
+import 'edit_item_page.dart';
 
 class ScanPage extends StatefulWidget {
   @override
@@ -51,31 +52,13 @@ class _ScanPageState extends State<ScanPage> {
                       ),
                     );
                   } else {
-                    showDialog(
-                      context: context,
-                      builder: (_) => AlertDialog(
-                        title: Text(item.name),
-
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text("Code : ${item.code}"),
-                            Text("Location : ${item.location}"),
-                            Text("Status : ${item.status}"),
-                          ],
-                        ),
-
-                        actions: [
-                          TextButton(
-                            child: Text("ปิด"),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              scanned = false;
-                            },
-                          ),
-                        ],
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => EditItemPage(item: item),
                       ),
                     );
+                    scanned = false;
                   }
 
                   break;
