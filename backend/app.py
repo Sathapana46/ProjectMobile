@@ -1,6 +1,7 @@
 from flask import Flask,request,jsonify
 from flask_cors import CORS
-import mysql
+
+import pandas as pd
 from db import connect_db
 from flask import send_from_directory
 from flask import make_response
@@ -89,7 +90,46 @@ def get_items():
 
     return jsonify(items)
 
+@app.route("/import-items", methods=["POST"])
+def import_items():
 
+    if "file" not in request.files:
+        return jsonify({"status":"error","message":"no file"})
+
+    file = request.files["file"]
+
+    # ตรวจชนิดไฟล์
+    if file.filename.endswith(".csv"):
+        df = pd.read_csv(file)
+    else:
+        df = pd.read_excel(file, engine="openpyxl")
+
+    db = connect_db()
+    cursor = db.cursor()
+
+    for index, row in df.iterrows():
+
+        cursor.execute(
+            """
+            INSERT INTO items(name,type,code,status,location,image)
+            VALUES(%s,%s,%s,%s,%s,%s)
+            """,
+            (
+                row["name"],
+                row["type"],
+                row["code"],
+                row["status"],
+                row["location"],
+                ""
+            )
+        )
+
+    db.commit()
+
+    return jsonify({
+        "status":"success",
+        "rows": len(df)
+    })
 # SEARCH ITEM BY QR CODE (support slashes)
 
 @app.route("/items/<path:code>", methods=["GET"])
@@ -101,6 +141,25 @@ def search_item(code):
     cursor.execute(
         "SELECT * FROM items WHERE code=%s",
         (code,)
+    )
+
+    item = cursor.fetchone()
+
+    if item:
+        return jsonify(item)
+
+    return jsonify({"status":"not found"})
+
+
+@app.route("/item/<int:id>", methods=["GET"])
+def get_item(id):
+
+    db = connect_db()
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT * FROM items WHERE id=%s",
+        (id,)
     )
 
     item = cursor.fetchone()
@@ -190,7 +249,7 @@ def dashboard():
     cursor.execute("SELECT COUNT(*) as total FROM items")
     total = cursor.fetchone()
 
-    cursor.execute("SELECT COUNT(*) as repair FROM items WHERE status='ซ่อม'")
+    cursor.execute("SELECT COUNT(*) as repair FROM items WHERE status='ชำรุดรอซ่อม'") 
     repair = cursor.fetchone()
 
     return jsonify({
@@ -271,5 +330,45 @@ def delete_item(id):
     return jsonify({"status":"deleted"})
 
 
+
+
+@app.route("/import-users", methods=["POST"])
+def import_users():
+
+    if "file" not in request.files:
+        return jsonify({"status":"error","message":"no file"})
+
+    file = request.files["file"]
+
+    if file.filename.endswith(".csv"):
+        df = pd.read_csv(file)
+    else:
+        df = pd.read_excel(file, engine="openpyxl")
+
+    db = connect_db()
+    cursor = db.cursor()
+
+    for index,row in df.iterrows():
+
+        cursor.execute(
+            """
+            INSERT INTO users(username,password,role)
+            VALUES(%s,%s,%s)
+            """,
+            (
+                row["username"],
+                row["password"],
+                row["role"]
+            )
+        )
+
+    db.commit()
+
+    return jsonify({
+        "status":"success",
+        "rows": len(df)
+    })
+
 if __name__ == "__main__":
+    print(app.url_map)
     app.run(host="0.0.0.0",port=5000)

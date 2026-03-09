@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Add Item</title>
+</head>
+
+<body>
+
+<h1>Add New Item</h1>
+
+<form id="itemForm">
+
+<label>ชื่อครุภัณฑ์</label><br>
+<input type="text" name="name" required><br><br>
+
+<label>ประเภท</label><br>
+<input type="text" name="type" required><br><br>
+
+<label>รหัสครุภัณฑ์</label><br>
+<input type="text" name="code" required><br><br>
+
+<label>สถานะ</label><br>
+<select name="status">
+<option value="ปกติ">ปกติ</option>
+<option value="ชำรุดรอซ่อม">ชำรุดรอซ่อม</option>
+<option value="จำหน่ายออก">จำหน่ายออก</option>
+</select><br><br>
+
+<label>สถานที่</label><br>
+<input type="text" name="location" required><br><br>
+
+<label>รูปภาพ</label><br>
+<input type="file" name="image"><br><br>
+
+<button type="submit">Add Item</button>
+
+</form>
+
+<script>
+
+document.getElementById("itemForm").addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const form = new FormData(this);
+
+    const res = await fetch("https://teresa-semiradical-odilia.ngrok-free.dev/add-item",{
+        method:"POST",
+        body:form
+    });
+
+    const data = await res.json();
+
+    if(data.status === "success"){
+        alert("เพิ่มครุภัณฑ์สำเร็จ");
+    }else{
+        alert("เกิดข้อผิดพลาด");
+    }
+
+});
+
+</script>
+
+</body>
+</html>

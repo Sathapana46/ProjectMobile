@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 09, 2026 at 11:15 AM
+-- Generation Time: Mar 09, 2026 at 09:27 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -42,10 +42,13 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `name`, `type`, `code`, `status`, `location`, `image`) VALUES
-(1, 'Printer', 'Electronic', 'EQ001', 'ใช้งาน', 'ห้อง101', ''),
-(2, 'Computer', 'Electronic', 'EQ002', 'ใช้งาน', 'ห้อง102', ''),
-(3, 'Projector', 'Electronic', 'EQ003', 'ใช้งาน', 'ห้องประชุม', ''),
-(7, 'sade', 'asfsaf', 'asdad4848485', 'ใช้งาน', 'ไม่บอก', '');
+(1, 'Printer', 'Electronic', 'EQ001', 'ปกติ', 'ห้อง101', ''),
+(2, 'Computer', 'Electronic', 'EQ002', 'ปกติ', 'ห้อง102', ''),
+(3, 'Projector', 'Electronic', 'EQ003', 'ปกติ', 'ห้องประชุม', ''),
+(9, 'คอมพิวเตอร์', '1234568', '62828277', 'จำหน่ายออก', 'ไม่ต้องรู้', 'scaled_3458a9b5-3bc5-4eee-b224-1f78bb90d57b1319815583386517411.jpg'),
+(10, 'com1', 'computer ', '744000010004-30502-00172', 'ชำรุดรอซ่อม', 'idk', 'scaled_dde85cf3-af33-4a13-96ce-bce943e4fe472860956409148663273.jpg'),
+(12, 'com2', 'computer ', '744000010004-30502-00168', 'จำหน่ายออก', 'B415', 'scaled_394b8510-ee6c-4b5c-9302-49cc4a0344f16647054757227031264.jpg'),
+(13, 'โต๊ะ', 'โต๊ะคอม', '7110-017-06-12/00188', 'ชำรุดรอซ่อม', 'B415', 'scaled_e98f8265-2707-47e1-be5a-230420f4b89f7147640186673471763.jpg');
 
 -- --------------------------------------------------------
 
@@ -67,8 +70,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `fullname`, `role`) VALUES
 (1, 'admin', '1234', 'ผู้ดูแลระบบ', 'admin'),
-(2, 'test1', '1234', 'Test User', 'user'),
-(3, 'Tanakorn', '123456', 'Tanakorn', 'user');
+(3, 'Tanakorn', '123456', 'Tanakorn', 'user'),
+(4, 'jeng', '28062546', NULL, 'user');
 
 --
 -- Indexes for dumped tables
@@ -94,13 +97,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

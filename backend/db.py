@@ -6,5 +6,6 @@ def connect_db():
         host="localhost",
         user="root",
         password="",
-        database="asset_system"
+        database="asset_system",
+        charset="utf8mb4"
     )

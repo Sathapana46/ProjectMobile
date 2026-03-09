@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Items</title>
+<script src="js/api.js"></script>
+</head>
+
+<body>
+
+<h1>รายการครุภัณฑ์</h1>
+
+<table border="1">
+<thead>
+
+<tr>
+<th>ID</th>
+<th>ชื่อ</th>
+<th>ประเภท</th>
+<th>สถานะ</th>
+<th>สถานที่</th>
+<th>แก้ไข</th>
+<th>ลบ</th>
+</tr>
+
+</thead>
+
+<tbody id="table"></tbody>
+
+</table>
+
+<script>
+
+async function load(){
+
+    const items = await getItems();
+
+    let html = "";
+
+    items.forEach(item => {
+
+        html += `
+        <tr>
+
+        <td>${item.id}</td>
+        <td>${item.name}</td>
+        <td>${item.type}</td>
+        <td>${item.status}</td>
+        <td>${item.location}</td>
+
+        <td>
+        <button onclick="edit(${item.id})">แก้ไข</button>
+        </td>
+
+        <td>
+        <button onclick="remove(${item.id})">ลบ</button>
+        </td>
+
+        </tr>
+        `;
+    });
+
+    document.getElementById("table").innerHTML = html;
+
+}
+
+function edit(id){
+
+    window.location.href = "edit-item.html?id=" + id;
+
+}
+
+async function remove(id){
+
+    if(confirm("ต้องการลบข้อมูลหรือไม่?")){
+
+        await deleteItem(id);
+
+        load();
+
+    }
+
+}
+
+load();
+
+</script>
+
+</body>
+</html>

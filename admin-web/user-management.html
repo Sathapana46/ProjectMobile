@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>User Management</title>
+
+<style>
+
+body{
+font-family: Arial;
+width:800px;
+margin:auto;
+}
+
+table{
+width:100%;
+border-collapse: collapse;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:8px;
+}
+
+th{
+background:#2196F3;
+color:white;
+}
+
+button{
+padding:5px 10px;
+cursor:pointer;
+}
+
+.addbox{
+margin-bottom:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>จัดการผู้ใช้</h1>
+
+<div class="addbox">
+
+<input type="text" id="username" placeholder="Username">
+<input type="text" id="password" placeholder="Password">
+
+<select id="role">
+<option value="user">user</option>
+<option value="admin">admin</option>
+</select>
+
+<button onclick="addUser()">Add User</button>
+
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Username</th>
+<th>Role</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="userTable"></tbody>
+
+</table>
+
+<h3>Import Users CSV</h3>
+
+<form id="importForm">
+<input type="file" id="csvfile" accept=".csv,.xlsx">
+<button type="submit">Upload CSV</button>
+</form>
+
+<script>
+
+const API = "http://localhost:5000"
+
+async function loadUsers(){
+
+    const res = await fetch(API + "/users")
+    const users = await res.json()
+
+    let html = ""
+
+    users.forEach(u => {
+
+        html += `
+        <tr>
+
+        <td>${u.id}</td>
+
+        <td>
+        <input value="${u.username}" id="user_${u.id}">
+        </td>
+
+        <td>
+        <select id="role_${u.id}">
+        <option value="user" ${u.role=="user"?"selected":""}>user</option>
+        <option value="admin" ${u.role=="admin"?"selected":""}>admin</option>
+        </select>
+        </td>
+
+        <td>
+
+        <button onclick="updateUser(${u.id})">Save</button>
+
+        <button onclick="deleteUser(${u.id})">Delete</button>
+
+        </td>
+
+        </tr>
+        `
+    })
+
+    document.getElementById("userTable").innerHTML = html
+}
+
+loadUsers()
+
+async function addUser(){
+
+    const username = document.getElementById("username").value
+    const password = document.getElementById("password").value
+    const role = document.getElementById("role").value
+
+    if(username === "" || password === ""){
+        alert("กรอกข้อมูลให้ครบ")
+        return
+    }
+
+    await fetch(API + "/add-user",{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            username:username,
+            password:password,
+            role:role
+        })
+    })
+
+    document.getElementById("username").value=""
+    document.getElementById("password").value=""
+
+    loadUsers()
+}
+
+async function updateUser(id){
+
+    const username = document.getElementById("user_"+id).value
+    const role = document.getElementById("role_"+id).value
+
+    await fetch(API + "/update-user/" + id,{
+        method:"PUT",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            username:username,
+            role:role
+        })
+    })
+
+    alert("Updated")
+
+    loadUsers()
+}
+
+async function deleteUser(id){
+
+    if(!confirm("Delete user ?")) return
+
+    await fetch(API + "/delete-user/" + id,{
+        method:"DELETE"
+    })
+
+    loadUsers()
+}
+
+document.getElementById("importForm").addEventListener("submit",async function(e){
+
+    e.preventDefault()
+
+    const file = document.getElementById("csvfile").files[0]
+
+    if(!file){
+        alert("กรุณาเลือกไฟล์ CSV")
+        return
+    }
+
+    const formData = new FormData()
+
+    formData.append("file",file)
+
+    const res = await fetch(API + "/import-users",{
+        method:"POST",
+        body:formData
+    })
+
+    const result = await res.json()
+
+    alert("Import success : " + result.rows + " users")
+
+    loadUsers()
+
+})
+
+</script>
+
+</body>
+</html>

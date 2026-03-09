@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Edit Item</title>
+</head>
+
+<body>
+
+<h1>Edit Item</h1>
+
+<form id="editForm">
+
+<label>ชื่อครุภัณฑ์</label><br>
+<input type="text" id="name"><br><br>
+
+<label>ประเภท</label><br>
+<input type="text" id="type"><br><br>
+
+<label>รหัสครุภัณฑ์</label><br>
+<input type="text" id="code"><br><br>
+
+<label>สถานะ</label><br>
+<select id="status">
+<option value="ปกติ">ปกติ</option>
+<option value="ชำรุดรอซ่อม">ชำรุดรอซ่อม</option>
+<option value="จำหน่ายออก">จำหน่ายออก</option>
+</select><br><br>
+
+<label>สถานที่</label><br>
+<input type="text" id="location"><br><br>
+
+<button type="submit">Save</button>
+
+</form>
+
+<script>
+
+const API = "http://localhost:5000"
+
+const params = new URLSearchParams(window.location.search)
+const id = params.get("id")
+
+async function loadItem(){
+
+    const res = await fetch(API + "/item/" + id)
+    const item = await res.json()
+
+    document.getElementById("name").value = item.name
+    document.getElementById("type").value = item.type
+    document.getElementById("code").value = item.code
+    document.getElementById("status").value = item.status
+    document.getElementById("location").value = item.location
+}
+
+loadItem()
+
+document.getElementById("editForm").addEventListener("submit", async function(e){
+
+    e.preventDefault()
+
+    const data = {
+        name: document.getElementById("name").value,
+        type: document.getElementById("type").value,
+        code: document.getElementById("code").value,
+        status: document.getElementById("status").value,
+        location: document.getElementById("location").value
+    }
+
+    const res = await fetch(API + "/update-item/" + id,{
+        method:"PUT",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify(data)
+    })
+
+    const result = await res.json()
+
+    if(result.status === "updated"){
+        alert("แก้ไขสำเร็จ")
+        window.location.href = "items.html"
+    }
+
+})
+
+</script>
+
+</body>
+</html>

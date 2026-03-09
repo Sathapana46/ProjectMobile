@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+<script src="js/api.js"></script>
+</head>
+
+<body>
+
+<h1>Dashboard</h1>
+
+<div>
+    <h2>จำนวนครุภัณฑ์ทั้งหมด</h2>
+    <h3 id="total"></h3>
+</div>
+
+<div>
+    <h2>รายการที่ต้องซ่อม</h2>
+    <h3 id="repair"></h3>
+</div>
+
+<script>
+
+async function load(){
+
+    const data = await dashboard();
+
+    document.getElementById("total").innerText = data.total;
+    document.getElementById("repair").innerText = data.repair;
+
+}
+
+load();
+
+</script>
+
+</body>
+</html>
