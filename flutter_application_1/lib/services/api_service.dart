@@ -5,7 +5,8 @@ import '../models/item.dart';
 class ApiService {
 
   static const String baseUrl =
-      "https://teresa-semiradical-odilia.ngrok-free.dev";
+      // "https://teresa-semiradical-odilia.ngrok-free.dev";
+       "https://teresa-semiradical-odilia.ngrok-free.dev";
 
   // ===============================
   // SEARCH ITEM BY QR / BARCODE
